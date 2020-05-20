@@ -570,7 +570,7 @@ ModelImporter:
       takeName: Attack02
       internalID: 0
       firstFrame: 1
-      lastFrame: 16
+      lastFrame: 13.6
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -648,12 +648,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 309d585ba9505cc408f8720b7b078393,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

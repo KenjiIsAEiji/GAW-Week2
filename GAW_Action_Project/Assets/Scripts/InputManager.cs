@@ -18,5 +18,7 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         playerController.playerMove = inputs.Player.Move.ReadValue<Vector2>();
+
+        playerController.Attack = inputs.Player.Fire.ReadValue<float>() > InputSystem.settings.defaultButtonPressPoint;
     }
 }

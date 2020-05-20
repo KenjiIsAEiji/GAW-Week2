@@ -570,7 +570,7 @@ ModelImporter:
       takeName: Attack01
       internalID: 0
       firstFrame: 1
-      lastFrame: 10
+      lastFrame: 5.9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

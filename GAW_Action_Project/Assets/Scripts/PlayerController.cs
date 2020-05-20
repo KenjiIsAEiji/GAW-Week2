@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public Vector2 playerMove { get; set; }
+    public bool Attack { get; set; }
 
     [SerializeField] Rigidbody rb;
     [SerializeField] float Speed = 20f;
@@ -14,11 +15,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("キャラクターアニメーション")]
     [SerializeField] Animator animator;
+    [SerializeField] float AttackForce = 5.0f;
 
     [Header("接地判定")]
     [SerializeField] Transform groundOrigin;
     [SerializeField] float groundRange;
     [SerializeField] bool isGrounded;
+
+    [Header("攻撃判定")]
+    [SerializeField] Transform AttackOrigin;
+    [SerializeField] Vector3 attackBoxSize;
+    [SerializeField] LayerMask attackLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +37,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.Linecast(groundOrigin.position, (groundOrigin.position - transform.up * groundRange));
+        
         animator.SetBool("Grounded", isGrounded);
+        animator.SetBool("Attack", Attack);
     }
 
     private void FixedUpdate()
@@ -58,5 +67,29 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat("Velocity", rb.velocity.magnitude);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0, 0, 1, 0.4f);
+        Gizmos.DrawCube(AttackOrigin.position, attackBoxSize * 2f);
+    }
+
+    void OnAttack()
+    {
+        Debug.Log("Attack");
+        rb.AddForce(transform.forward * AttackForce,ForceMode.Impulse);
+
+        Collider[] cols = Physics.OverlapBox(AttackOrigin.position, attackBoxSize,Quaternion.identity,attackLayer);
+
+        foreach(Collider target in cols)
+        {
+            Rigidbody target_rb = target.GetComponent<Rigidbody>();
+            if (target_rb != null)
+            {
+                target_rb.AddForceAtPosition(transform.forward * 10,AttackOrigin.position,ForceMode.Impulse);
+            }
+        }
+
     }
 }
