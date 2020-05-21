@@ -100,6 +100,11 @@ public class PlayerController : MonoBehaviour
             {
                 target_rb.AddForceAtPosition(transform.forward * 20, AttackOrigin.position, ForceMode.Impulse);
             }
+
+            if (target.CompareTag("Enemy"))
+            {
+                target.GetComponent<EnemyController>().Damage();
+            }
         }
     }
 }

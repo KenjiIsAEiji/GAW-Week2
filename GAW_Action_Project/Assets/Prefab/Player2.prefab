@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1256785320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.99, z: 0.9}
+  m_LocalPosition: {x: -0, y: 0.71, z: 0.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2762289990441213195}
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 7146954028815365849}
   m_Layer: 8
   m_Name: Player2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -675,14 +675,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 7146954028815365851}
   Speed: 10
-  JumpSpeed: 10
+  JumpSpeed: 8
   animator: {fileID: 5251095863354798193}
   AttackForce: 10
   groundOrigin: {fileID: 7146954029333453579}
   groundRange: 0.1
   isGrounded: 0
   AttackOrigin: {fileID: 1256785321}
-  attackBoxSize: {x: 0.44, y: 1.13, z: 0.45}
+  attackBoxSize: {x: 0.29, y: 1.13, z: 0.45}
   attackLayer:
     serializedVersion: 2
     m_Bits: 55
