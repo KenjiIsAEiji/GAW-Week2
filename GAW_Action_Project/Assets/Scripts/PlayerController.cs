@@ -46,19 +46,23 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 target_velocity = Vector3.right * playerMove.x * Speed;
 
-        if (playerMove.x != 0)
-        {
-            transform.rotation = Quaternion.LookRotation(Vector3.right * playerMove.x);
-        }
-
         if (isGrounded)
         {
             rb.drag = defaultDrag;
-            rb.AddForce(target_velocity * rb.mass * rb.drag / (1f - rb.drag * Time.fixedDeltaTime));
 
-            if (playerMove.y > InputSystem.settings.defaultButtonPressPoint)
+            if (animator.GetCurrentAnimatorStateInfo(0).IsTag("moveTree"))
             {
-                rb.AddForce(transform.up * JumpSpeed,ForceMode.Impulse);
+                if (playerMove.x != 0)
+                {
+                    transform.rotation = Quaternion.LookRotation(Vector3.right * playerMove.x);
+                }
+
+                rb.AddForce(target_velocity * rb.mass * rb.drag / (1f - rb.drag * Time.fixedDeltaTime));
+
+                if (playerMove.y > InputSystem.settings.defaultButtonPressPoint)
+                {
+                    rb.AddForce(transform.up * JumpSpeed, ForceMode.Impulse);
+                }
             }
         }
         else
@@ -78,18 +82,24 @@ public class PlayerController : MonoBehaviour
     void OnAttack()
     {
         Debug.Log("Attack");
-        rb.AddForce(transform.forward * AttackForce,ForceMode.Impulse);
+        if (isGrounded)
+        {
+            rb.AddForce(transform.forward * AttackForce, ForceMode.Impulse);
+        }
+        else
+        {
+            rb.AddForce(transform.up * AttackForce / 2f, ForceMode.Impulse);
+        }
 
         Collider[] cols = Physics.OverlapBox(AttackOrigin.position, attackBoxSize,Quaternion.identity,attackLayer);
 
-        foreach(Collider target in cols)
+        foreach (Collider target in cols)
         {
             Rigidbody target_rb = target.GetComponent<Rigidbody>();
             if (target_rb != null)
             {
-                target_rb.AddForceAtPosition(transform.forward * 10,AttackOrigin.position,ForceMode.Impulse);
+                target_rb.AddForceAtPosition(transform.forward * 20, AttackOrigin.position, ForceMode.Impulse);
             }
         }
-
     }
 }
