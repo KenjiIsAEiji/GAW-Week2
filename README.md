@@ -18,3 +18,9 @@
 <img src="https://user-images.githubusercontent.com/41467408/82457168-14cc8e00-9af0-11ea-8b62-37dd555b4719.jpg" width="500px">
 
 <img src="https://user-images.githubusercontent.com/41467408/82457183-18f8ab80-9af0-11ea-8355-371bf6a4c30c.jpg" width="320px">
+
+### 制作4日目　制作時間 6時間　敵モデルの決定と空中攻撃
+　空中時の別のコンボを設定して、空中にいる間でも攻撃が可能にしました。瞬間移動を高台に移動する目的にしてしまうと、敵をジャンプさせるのも面倒なので、でっかいボス敵の高い位置にある弱点を狙えるようにすることや、回避に瞬間移動を使う目的にしようとを決めて、敵モデルも大きいロボと小さいロボの二つを用意しました。そのためasset吟味に時間がかかってしまったので、アセットストアを漁るのは作業時間外でパパっと済ませようと感じました。
+
+<img src="https://user-images.githubusercontent.com/41467408/82569744-9f2df400-9bbb-11ea-997b-28a274ae2b87.png" width="300px"><img src="https://user-images.githubusercontent.com/41467408/82570245-4b6fda80-9bbc-11ea-936c-5b2fc6485abc.jpg" width="320px">
+
