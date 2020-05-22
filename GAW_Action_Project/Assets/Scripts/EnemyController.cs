@@ -14,8 +14,12 @@ public class EnemyController : MonoBehaviour
     
     [SerializeField] float KickBackForce = 1f;
     [SerializeField] float KickBackTime = .1f;
+    [SerializeField] float hitStopTime = .1f;
+    [SerializeField] float HSStartTime = .1f;
 
     bool isKickBack = false;
+
+    [SerializeField] Animator animator;
     
     // Start is called before the first frame update
     void Start()
@@ -26,7 +30,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        animator.SetFloat("Velocity", enemyRb.velocity.magnitude);
     }
 
     private void FixedUpdate()
@@ -49,14 +53,29 @@ public class EnemyController : MonoBehaviour
     public void Damage()
     {
         StartCoroutine(KickBack());
+        animator.SetTrigger("Damage");
     }
 
     IEnumerator KickBack()
     {
         isKickBack = true;
+        StartCoroutine(HSStartTimer());
 
-        yield return new WaitForSeconds(KickBackTime);
+        yield return new WaitForSecondsRealtime(KickBackTime);
 
         isKickBack = false;
+    }
+    
+    IEnumerator HSStartTimer()
+    {
+        yield return new WaitForSecondsRealtime(HSStartTime);
+        StartCoroutine(HitStop());
+    }
+
+    IEnumerator HitStop()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(hitStopTime);
+        Time.timeScale = 1;
     }
 }
