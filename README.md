@@ -24,3 +24,7 @@
 
 <img src="https://user-images.githubusercontent.com/41467408/82569744-9f2df400-9bbb-11ea-997b-28a274ae2b87.png" width="300px"><img src="https://user-images.githubusercontent.com/41467408/82570245-4b6fda80-9bbc-11ea-936c-5b2fc6485abc.jpg" width="320px">
 
+### 制作5日目　制作時間 10時間　敵の移動に関しての仕様変更とヒットストップ
+　最初はナビゲーションを使用して敵を動かしていたが、ノックバックの動きがどうしてもイマイチで、移動は横方向のみに限定しているので、常にプレイヤを向いて一定速度で移動するのをRigidbodyを使って実装しなおしました。それに結構な時間を使って、残りの時間でステージとヒットストップをパパっと作って今日は終了。明日のうちにGameManagerまで実装してしまいたい...
+ 
+<img src="https://user-images.githubusercontent.com/41467408/82679384-df59a900-9c85-11ea-8dc5-67e89204fe36.png" width="500px">
