@@ -1,39 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform playerTrans;
     [SerializeField] Rigidbody enemyRb;
+    [SerializeField] float anglerRaito = 10f;
+    [SerializeField] float EnemySpeed = 10f;
+    [SerializeField] float stopDistance = 1f;
+    
+    private float defaultDrag;
+    
     [SerializeField] float KickBackForce = 1f;
+    [SerializeField] float KickBackTime = .1f;
 
     bool isKickBack = false;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        defaultDrag = enemyRb.drag;
     }
 
     // Update is called once per frame
     void Update()
     {
-        agent.SetDestination(playerTrans.position);
-        if (isKickBack)
+        
+    }
+
+    private void FixedUpdate()
+    {
+        if ((transform.position - playerTrans.position).magnitude > stopDistance)
         {
-            agent.isStopped = true;
-            agent.updateRotation = false;
-            agent.velocity = playerTrans.forward * KickBackForce;
+            Vector3 velocity = transform.forward * EnemySpeed;
+            enemyRb.AddForce(velocity * enemyRb.mass * enemyRb.drag / (1f - enemyRb.drag * Time.fixedDeltaTime));
         }
-        else
-        {
-            agent.isStopped = false;
-            agent.updateRotation = true;
-        }
+
+        Vector3 dir = playerTrans.position - transform.position;
+
+        Quaternion target_rot = Quaternion.LookRotation(dir);
+        target_rot = target_rot * Quaternion.Inverse(transform.rotation);
+        Vector3 torque = new Vector3(target_rot.x, target_rot.y, target_rot.z) * anglerRaito;
+
+        enemyRb.AddTorque(torque);
     }
 
     public void Damage()
@@ -45,7 +55,7 @@ public class EnemyController : MonoBehaviour
     {
         isKickBack = true;
 
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(KickBackTime);
 
         isKickBack = false;
     }

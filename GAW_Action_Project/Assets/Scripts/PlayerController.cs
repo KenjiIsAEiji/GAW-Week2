@@ -82,14 +82,11 @@ public class PlayerController : MonoBehaviour
     void OnAttack()
     {
         Debug.Log("Attack");
-        if (isGrounded)
-        {
-            rb.AddForce(transform.forward * AttackForce, ForceMode.Impulse);
-        }
-        else
+        if (!isGrounded)
         {
             rb.AddForce(transform.up * AttackForce / 2f, ForceMode.Impulse);
         }
+        rb.AddForce(transform.forward * AttackForce, ForceMode.Impulse);
 
         Collider[] cols = Physics.OverlapBox(AttackOrigin.position, attackBoxSize,Quaternion.identity,attackLayer);
 
