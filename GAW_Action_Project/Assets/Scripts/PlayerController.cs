@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public Vector2 playerMove { get; set; }
+    public Vector2 mousePosition { get; set; }
     public bool Attack { get; set; }
+    public bool BeaconFire { get; set; }
 
     [SerializeField] Rigidbody rb;
     [SerializeField] float Speed = 20f;
@@ -32,6 +34,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask attackLayer;
     [SerializeField] float attackPower = 1.5f;
 
+    [Header("ビーコン発射系")]
+    [SerializeField] Transform LinePointer;
+    [SerializeField] Transform shootOrigin;
+    Plane plane = new Plane();
+    private float distance = 0;
+    bool Aiming = false;
+    bool readyBeacon = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +54,36 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.Linecast(groundOrigin.position, (groundOrigin.position - transform.up * groundRange));
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        plane.SetNormalAndPosition(Vector3.back, transform.localPosition);
+        
+        if(plane.Raycast(ray,out distance))
+        {
+            Vector3 lookPoint = ray.GetPoint(distance);
+            LinePointer.LookAt(lookPoint);
+        }
+
+        LinePointer.gameObject.SetActive(BeaconFire);
+        if (BeaconFire)
+        {
+            if (readyBeacon)
+            {
+                JumpToBeacon();
+            }
+            else
+            {
+                Aiming = true;
+            }
+        }
+        else
+        {
+            if (Aiming)
+            {
+                FireBeacon();
+                Aiming = false;
+            }
+        }
         
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("Attack", Attack);
@@ -86,6 +126,19 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Hit");
     }
 
+    // Fire Beacon
+    void FireBeacon()
+    {
+        Debug.Log("Beacon!");
+        readyBeacon = true;
+    }
+    
+    void JumpToBeacon()
+    {
+        Debug.Log("Jump to Beacon");
+        readyBeacon = false;
+    }
+    
     // animationEvent
     void OnAttack()
     {
