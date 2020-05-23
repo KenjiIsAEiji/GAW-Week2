@@ -9,38 +9,74 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float anglerRaito = 10f;
     [SerializeField] float EnemySpeed = 10f;
     [SerializeField] float stopDistance = 1f;
-    
     private float defaultDrag;
-    
+
+    [Header("ダメージ処理")]
     [SerializeField] float KickBackForce = 1f;
     [SerializeField] float KickBackTime = .1f;
     [SerializeField] float hitStopTime = .1f;
     [SerializeField] float HSStartTime = .1f;
-
     bool isKickBack = false;
+
+    [Header("HP処理系")]
+    [SerializeField] float MaxHp = 50f;
+    [SerializeField] float Hp;
+    [SerializeField] bool isDead = false;
+
+    [Header("攻撃範囲")]
+    [SerializeField] Transform AttackBoxOrigin;
+    [SerializeField] Vector3 AttackBoxScale = Vector3.one;
+    [SerializeField] float attackPower = 10f;
 
     [SerializeField] Animator animator;
     
     // Start is called before the first frame update
     void Start()
     {
+        Hp = MaxHp;
         defaultDrag = enemyRb.drag;
+
+        playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat("Velocity", enemyRb.velocity.magnitude);
+        if (!isDead)
+        {
+            animator.SetFloat("Velocity", enemyRb.velocity.magnitude);
+        }
+        animator.SetBool("Dead", isDead);
     }
 
     private void FixedUpdate()
     {
-        if ((transform.position - playerTrans.position).magnitude > stopDistance)
+        if (!isDead)
         {
-            Vector3 velocity = transform.forward * EnemySpeed;
-            enemyRb.AddForce(velocity * enemyRb.mass * enemyRb.drag / (1f - enemyRb.drag * Time.fixedDeltaTime));
-        }
+            if ((transform.position - playerTrans.position).magnitude > stopDistance)
+            {
+                animator.ResetTrigger("Attack");
+                DoMove();
+            }
+            else
+            {
+                animator.SetTrigger("Attack");
+            }
 
+            PlayerLookAt();
+        }
+    }
+
+    // Call me from FixedUpdate()
+    void DoMove()
+    {
+        Vector3 velocity = transform.forward * EnemySpeed;
+        enemyRb.AddForce(velocity * enemyRb.mass * enemyRb.drag / (1f - enemyRb.drag * Time.fixedDeltaTime));
+    }
+
+    // Call me from FixedUpdate()
+    void PlayerLookAt()
+    {
         Vector3 dir = playerTrans.position - transform.position;
 
         Quaternion target_rot = Quaternion.LookRotation(dir);
@@ -50,10 +86,29 @@ public class EnemyController : MonoBehaviour
         enemyRb.AddTorque(torque);
     }
 
-    public void Damage()
+    public void Damage(float damage)
     {
-        StartCoroutine(KickBack());
-        animator.SetTrigger("Damage");
+        Hp -= damage;
+        // To dead
+        if (Hp <= 0)
+        {
+            Hp = 0;
+            isDead = true;
+            IsDead();
+        }
+        else
+        {
+            StartCoroutine(KickBack());
+            animator.SetTrigger("Damage");
+        }
+    }
+
+    void IsDead()
+    {
+        enemyRb.constraints = RigidbodyConstraints.None;
+        enemyRb.drag = 0;
+        GetComponent<CapsuleCollider>().direction = 2;
+        Destroy(this.gameObject,0.5f);
     }
 
     IEnumerator KickBack()
@@ -77,5 +132,31 @@ public class EnemyController : MonoBehaviour
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(hitStopTime);
         Time.timeScale = 1;
+    }
+
+    // animationEvent
+    void OnAttack()
+    {
+        Collider[] cols = Physics.OverlapBox(AttackBoxOrigin.position, AttackBoxScale, Quaternion.identity);
+
+        foreach (Collider target in cols)
+        {
+            Rigidbody target_rb = target.GetComponent<Rigidbody>();
+            if (target_rb != null)
+            {
+                target_rb.AddForceAtPosition(transform.forward * 10, AttackBoxOrigin.position, ForceMode.Impulse);
+            }
+
+            if (target.CompareTag("Player"))
+            {
+                playerTrans.GetComponent<PlayerController>().Damage(attackPower);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.4f);
+        Gizmos.DrawCube(AttackBoxOrigin.position, AttackBoxScale * 2f);
     }
 }

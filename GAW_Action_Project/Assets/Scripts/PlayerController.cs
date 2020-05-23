@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float JumpSpeed = 5.0f;
     float defaultDrag;
 
+    [Header("Playerステータス")]
+    public float MaxHp = 100f;
+    public float Hp;
+
     [Header("キャラクターアニメーション")]
     [SerializeField] Animator animator;
     [SerializeField] float AttackForce = 5.0f;
@@ -26,11 +30,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform AttackOrigin;
     [SerializeField] Vector3 attackBoxSize;
     [SerializeField] LayerMask attackLayer;
+    [SerializeField] float attackPower = 1.5f;
 
     // Start is called before the first frame update
     void Start()
     {
         defaultDrag = rb.drag;
+
+        Hp = MaxHp;
     }
 
     // Update is called once per frame
@@ -73,12 +80,13 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Velocity", rb.velocity.magnitude);
     }
 
-    private void OnDrawGizmos()
+    public void Damage(float damagePoint)
     {
-        Gizmos.color = new Color(0, 0, 1, 0.4f);
-        Gizmos.DrawCube(AttackOrigin.position, attackBoxSize * 2f);
+        Hp -= damagePoint;
+        animator.SetTrigger("Hit");
     }
 
+    // animationEvent
     void OnAttack()
     {
         Debug.Log("Attack");
@@ -100,8 +108,14 @@ public class PlayerController : MonoBehaviour
 
             if (target.CompareTag("Enemy"))
             {
-                target.GetComponent<EnemyController>().Damage();
+                target.GetComponent<EnemyController>().Damage(attackPower);
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0, 0, 1, 0.4f);
+        Gizmos.DrawCube(AttackOrigin.position, attackBoxSize * 2f);
     }
 }

@@ -720,6 +720,7 @@ Transform:
   m_Children:
   - {fileID: 4281485503794276401}
   - {fileID: 3178059993670765972}
+  - {fileID: 312975947331589951}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
@@ -788,9 +789,16 @@ MonoBehaviour:
   enemyRb: {fileID: 4660232953173379328}
   anglerRaito: 10
   EnemySpeed: 4
-  stopDistance: 2
+  stopDistance: 1
   KickBackForce: 3
-  KickBackTime: 0.2
+  KickBackTime: 0.3
+  hitStopTime: 0.1
+  HSStartTime: 0.1
+  MaxHp: 10
+  Hp: 0
+  isDead: 0
+  AttackBoxOrigin: {fileID: 312975947331589951}
+  AttackBoxScale: {x: 0.4, y: 1, z: 1}
   animator: {fileID: 2104494707}
 --- !u!1 &4010046996682518304
 GameObject:
@@ -853,6 +861,36 @@ Transform:
   - {fileID: 3608547601639167224}
   m_Father: {fileID: 3600932967543837393}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4206141175696251463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 312975947331589951}
+  m_Layer: 0
+  m_Name: AttackBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &312975947331589951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4206141175696251463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.81, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 420749980436646132}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4292000207996336901
 GameObject:
