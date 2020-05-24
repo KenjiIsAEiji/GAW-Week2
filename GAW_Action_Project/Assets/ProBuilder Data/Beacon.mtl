@@ -1,0 +1,8 @@
+newmtl BeaconLight
+Kd 1 1 1
+d 1
+
+newmtl Beacon
+Kd 0.4622641 0.4622641 0.4622641
+d 1
+
