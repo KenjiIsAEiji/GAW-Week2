@@ -7,7 +7,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Transform playerTrans;
     [SerializeField] Rigidbody enemyRb;
     [SerializeField] float anglerRaito = 10f;
-    [SerializeField] float EnemySpeed = 10f;
     [SerializeField] float stopDistance = 1f;
     private float defaultDrag;
 
@@ -19,21 +18,25 @@ public class EnemyController : MonoBehaviour
     bool isKickBack = false;
 
     [Header("HP処理系")]
-    [SerializeField] float MaxHp = 50f;
-    [SerializeField] float Hp;
+    public float MaxHp;
+    public float Hp;
     [SerializeField] bool isDead = false;
+    [SerializeField] float DestroyTime = 0.5f;
 
     [Header("攻撃範囲")]
     [SerializeField] Transform AttackBoxOrigin;
     [SerializeField] Vector3 AttackBoxScale = Vector3.one;
-    [SerializeField] float attackPower = 10f;
+    [SerializeField] float AttackForce = 10f;
+
+    [Header("ステータスデータ")]
+    [SerializeField] EnemyData data;
 
     [SerializeField] Animator animator;
     
     // Start is called before the first frame update
     void Start()
     {
-        Hp = MaxHp;
+        Hp = MaxHp = data.MaxHp;
         defaultDrag = enemyRb.drag;
 
         playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
@@ -70,7 +73,7 @@ public class EnemyController : MonoBehaviour
     // Call me from FixedUpdate()
     void DoMove()
     {
-        Vector3 velocity = transform.forward * EnemySpeed;
+        Vector3 velocity = transform.forward * data.EnemyMaxSpeed;
         enemyRb.AddForce(velocity * enemyRb.mass * enemyRb.drag / (1f - enemyRb.drag * Time.fixedDeltaTime));
     }
 
@@ -108,7 +111,8 @@ public class EnemyController : MonoBehaviour
         enemyRb.constraints = RigidbodyConstraints.None;
         enemyRb.drag = 0;
         GetComponent<CapsuleCollider>().direction = 2;
-        Destroy(this.gameObject,0.5f);
+        GetComponent<Collider>().enabled = false;
+        Destroy(this.gameObject,DestroyTime);
     }
 
     IEnumerator KickBack()
@@ -144,12 +148,12 @@ public class EnemyController : MonoBehaviour
             Rigidbody target_rb = target.GetComponent<Rigidbody>();
             if (target_rb != null)
             {
-                target_rb.AddForceAtPosition(transform.forward * 10, AttackBoxOrigin.position, ForceMode.Impulse);
+                target_rb.AddForceAtPosition(transform.forward * AttackForce, AttackBoxOrigin.position, ForceMode.Impulse);
             }
 
             if (target.CompareTag("Player"))
             {
-                playerTrans.GetComponent<PlayerController>().Damage(attackPower);
+                playerTrans.GetComponent<PlayerController>().Damage(data.AttackPoint);
             }
         }
     }

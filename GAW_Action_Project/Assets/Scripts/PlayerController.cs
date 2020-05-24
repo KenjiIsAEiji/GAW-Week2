@@ -37,6 +37,10 @@ public class PlayerController : MonoBehaviour
     [Header("ビーコン発射系")]
     [SerializeField] Transform LinePointer;
     [SerializeField] Transform shootOrigin;
+    [SerializeField] float ShootPower = 10f;
+    [SerializeField] GameObject BeaconModel;
+    GameObject beaconInstance;
+
     Plane plane = new Plane();
     private float distance = 0;
     bool Aiming = false;
@@ -96,22 +100,16 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Attack", Attack);
     }
 
-    // Fire Beacon
-    void FireBeacon()
-    {
-        Debug.Log("FireBeacon");
-        readyBeacon = true;
-    }
 
-    void WarpToBeacon()
-    {
-        Debug.Log("Jump to Beacon");
-        Warped = true;
-    }
 
     private void FixedUpdate()
     {
         Vector3 target_velocity = Vector3.right * playerMove.x * Speed;
+
+        if (playerMove.x != 0)
+        {
+            transform.rotation = Quaternion.LookRotation(Vector3.right * playerMove.x);
+        }
 
         if (isGrounded)
         {
@@ -119,11 +117,6 @@ public class PlayerController : MonoBehaviour
 
             if (animator.GetCurrentAnimatorStateInfo(0).IsTag("moveTree"))
             {
-                if (playerMove.x != 0)
-                {
-                    transform.rotation = Quaternion.LookRotation(Vector3.right * playerMove.x);
-                }
-
                 rb.AddForce(target_velocity * rb.mass * rb.drag / (1f - rb.drag * Time.fixedDeltaTime));
 
                 if (playerMove.y > InputSystem.settings.defaultButtonPressPoint)
@@ -146,8 +139,29 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Hit");
     }
 
-    
-    
+    // Fire Beacon
+    void FireBeacon()
+    {
+        Debug.Log("FireBeacon");
+
+        beaconInstance = Instantiate(BeaconModel, shootOrigin.position, Quaternion.identity);
+        beaconInstance.GetComponent<Rigidbody>().AddForce(shootOrigin.forward * ShootPower, ForceMode.Impulse);
+
+        readyBeacon = true;
+    }
+
+    void WarpToBeacon()
+    {
+        Vector3 warpPosition = beaconInstance.transform.position;
+        rb.velocity = beaconInstance.GetComponent<Rigidbody>().velocity;
+
+        Destroy(beaconInstance);
+
+        this.transform.position = warpPosition;
+
+        Warped = true;
+    }
+
     // animationEvent
     void OnAttack()
     {
@@ -170,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
             if (target.CompareTag("Enemy"))
             {
-                target.GetComponent<EnemyController>().Damage(attackPower);
+                target.transform.root.GetComponent<EnemyController>().Damage(attackPower);
             }
         }
     }

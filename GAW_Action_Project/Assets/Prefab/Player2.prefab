@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165796746}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.799}
+  m_LocalPosition: {x: -0, y: 0, z: 0.451}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 614173769}
@@ -751,8 +751,8 @@ GameObject:
   - component: {fileID: 7146954028815365851}
   - component: {fileID: 7146954028815365850}
   - component: {fileID: 7146954028815365848}
-  - component: {fileID: 7146954028815365846}
   - component: {fileID: 7146954028815365849}
+  - component: {fileID: 7146954028815365846}
   m_Layer: 8
   m_Name: Player2
   m_TagString: Player
@@ -861,6 +861,19 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7146954028815365849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157136776658906904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f430b9c0d54dafd41abde2b9d23e5d09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 7146954028815365846}
 --- !u!114 &7146954028815365846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,26 +897,17 @@ MonoBehaviour:
   groundRange: 0.1
   isGrounded: 0
   AttackOrigin: {fileID: 1256785321}
-  attackBoxSize: {x: 0.49, y: 1.13, z: 0.69}
+  attackBoxSize: {x: 0.49, y: 1.13, z: 1.17}
   attackLayer:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 567
   attackPower: 1.5
   LinePointer: {fileID: 614173769}
   shootOrigin: {fileID: 165796747}
---- !u!114 &7146954028815365849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1157136776658906904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f430b9c0d54dafd41abde2b9d23e5d09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 7146954028815365846}
+  ShootPower: 10
+  BeaconModel: {fileID: 2880453644397984048, guid: f471e045f74502a438dd3a7f5bd70361,
+    type: 3}
+  readyBeacon: 0
 --- !u!1 &1184256506462603266
 GameObject:
   m_ObjectHideFlags: 0
