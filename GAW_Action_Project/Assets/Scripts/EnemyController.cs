@@ -112,7 +112,13 @@ public class EnemyController : MonoBehaviour
         enemyRb.drag = 0;
         GetComponent<CapsuleCollider>().direction = 2;
         GetComponent<Collider>().enabled = false;
+        
         Destroy(this.gameObject,DestroyTime);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.enemies.Remove(this);
     }
 
     IEnumerator KickBack()

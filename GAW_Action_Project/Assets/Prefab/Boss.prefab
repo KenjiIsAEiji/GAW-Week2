@@ -870,9 +870,10 @@ MonoBehaviour:
   MaxHp: 0
   Hp: 0
   isDead: 0
-  DestroyTime: 10
+  DestroyTime: 5
   AttackBoxOrigin: {fileID: 3414438351483485736}
   AttackBoxScale: {x: 1.42, y: 3.02, z: 4.2}
+  AttackForce: 10
   data: {fileID: 11400000, guid: 5822c26a53e975d42aab9fccc95dd2cc, type: 2}
   animator: {fileID: 592512093709770631}
 --- !u!1 &592512094662786084

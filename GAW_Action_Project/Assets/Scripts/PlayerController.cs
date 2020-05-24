@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [Header("Playerステータス")]
     public float MaxHp = 100f;
     public float Hp;
+    public bool isDead = false;
 
     [Header("キャラクターアニメーション")]
     [SerializeField] Animator animator;
@@ -53,6 +54,8 @@ public class PlayerController : MonoBehaviour
         defaultDrag = rb.drag;
 
         Hp = MaxHp;
+
+        GameManager.Instance.player = this;
     }
 
     // Update is called once per frame
@@ -98,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("Attack", Attack);
+        animator.SetBool("death", isDead);
     }
 
 
@@ -136,7 +140,15 @@ public class PlayerController : MonoBehaviour
     public void Damage(float damagePoint)
     {
         Hp -= damagePoint;
-        animator.SetTrigger("Hit");
+        
+        if(Hp <= 0)
+        {
+            isDead = true;
+        }
+        else
+        {
+            animator.SetTrigger("Hit");
+        }
     }
 
     // Fire Beacon

@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6754bad2dc8cb6b44896c1626e230993, type: 3}
-  m_Name: Boss Enemy Data
+  m_Script: {fileID: 11500000, guid: f102a286eee12d842974d922114c0ea2, type: 3}
+  m_Name: Spawn Data2
   m_EditorClassIdentifier: 
-  EnemyMaxSpeed: 5
-  MaxHp: 5
-  AttackPoint: 40
+  nomalEnemys: 0
+  BossEnemys: 1
