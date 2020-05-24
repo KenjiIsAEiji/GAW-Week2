@@ -40,7 +40,8 @@ public class PlayerController : MonoBehaviour
     Plane plane = new Plane();
     private float distance = 0;
     bool Aiming = false;
-    bool readyBeacon = false;
+    [SerializeField] bool readyBeacon = false;
+    bool Warped = false;
 
     // Start is called before the first frame update
     void Start()
@@ -64,12 +65,11 @@ public class PlayerController : MonoBehaviour
             LinePointer.LookAt(lookPoint);
         }
 
-        LinePointer.gameObject.SetActive(BeaconFire);
         if (BeaconFire)
         {
             if (readyBeacon)
             {
-                JumpToBeacon();
+                if (!Warped) WarpToBeacon();
             }
             else
             {
@@ -83,10 +83,30 @@ public class PlayerController : MonoBehaviour
                 FireBeacon();
                 Aiming = false;
             }
+            else if(Warped)
+            {
+                readyBeacon = false;
+                Warped = false;
+            }
         }
-        
+
+        LinePointer.gameObject.SetActive(Aiming);
+
         animator.SetBool("Grounded", isGrounded);
         animator.SetBool("Attack", Attack);
+    }
+
+    // Fire Beacon
+    void FireBeacon()
+    {
+        Debug.Log("FireBeacon");
+        readyBeacon = true;
+    }
+
+    void WarpToBeacon()
+    {
+        Debug.Log("Jump to Beacon");
+        Warped = true;
     }
 
     private void FixedUpdate()
@@ -126,18 +146,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Hit");
     }
 
-    // Fire Beacon
-    void FireBeacon()
-    {
-        Debug.Log("Beacon!");
-        readyBeacon = true;
-    }
     
-    void JumpToBeacon()
-    {
-        Debug.Log("Jump to Beacon");
-        readyBeacon = false;
-    }
     
     // animationEvent
     void OnAttack()
