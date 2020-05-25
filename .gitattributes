@@ -3,3 +3,4 @@
 GAW_Action_Project/Assets/MediumMechStriker/* filter=lfs diff=lfs merge=lfs -text
 GAW_Action_Project/Assets/MediumMechStriker/ExampleScene+Readme/* filter=lfs diff=lfs merge=lfs -text
 GAW_Action_Project/Assets/MediumMechStriker/FBX/* filter=lfs diff=lfs merge=lfs -text
+BuildData.zip filter=lfs diff=lfs merge=lfs -text
